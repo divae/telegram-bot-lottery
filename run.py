@@ -1,7 +1,7 @@
 import os
 
 from flask import Flask, request
-from project.services import TelegramWebHookService
+from project.services import TelegramWebHookService, LotteryService
 
 
 def create_chatbot():
@@ -14,9 +14,11 @@ def create_chatbot():
 
     @app.route('/', methods=['POST'])
     def start():
-        message = webHookService.process(request)
-        webHookService.send_message(message)
-        return message
+        awarded_numbers = LotteryService.summary()
+
+        webHookService.send_message(awarded_numbers)
+
+        return awarded_numbers
 
     return app
 
