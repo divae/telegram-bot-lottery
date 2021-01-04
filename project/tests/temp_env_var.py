@@ -1,0 +1,6 @@
+TEMP_ENV_VARS = {
+    'TELEGRAM_WEBHOOK_CODE': '',
+}
+
+ENV_VARS_TO_SUSPEND = [
+]
