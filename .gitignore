@@ -4,3 +4,4 @@ venv
 Pipfile.lock
 __pycache__
 */temp_env_var.py
+.env

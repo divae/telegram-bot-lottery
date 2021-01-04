@@ -10,6 +10,7 @@ requests = "*"
 pytest = "*"
 requests-mock = "*"
 pytest-mock = "*"
+python-dotenv = "*"
 
 [dev-packages]
 
