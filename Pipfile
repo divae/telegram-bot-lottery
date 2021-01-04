@@ -9,6 +9,10 @@ pytest-flask = "*"
 requests = "*"
 pytest = "*"
 requests-mock = "*"
+from = "*"
+pytest-mock = "*"
+import = "*"
+mocker = "*"
 
 [dev-packages]
 

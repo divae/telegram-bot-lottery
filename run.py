@@ -12,7 +12,9 @@ def create_chatbot():
 
     @app.route('/', methods=['POST'])
     def start():
-        return webHookService.process(request)
+        message = webHookService.process(request)
+        webHookService.send_message(message)
+        return message
 
     return app
 
