@@ -1,16 +1,7 @@
+import os
 import requests
 
-from project.constants import TELEGRAM_WEBHOOK_URL
-
 class TelegramWebHookService:
-    def send_message(self, json_data):
-        url = TELEGRAM_WEBHOOK_URL + 'sendMessage'
-        response = requests.post(url, json=json_data)
-        if response.ok:
-            return response
-        else:
-            return None
-
     def process(self, request):
         request_message = request.get_json()
         chat_id = request_message['message']['chat']['id']
@@ -22,4 +13,16 @@ class TelegramWebHookService:
         }
 
         return self.message
+
+    def send_message(self, json_data):
+        TELEGRAM_WEBHOOK_URL = f'https://api.telegram.org/bot{os.environ["TELEGRAM_WEBHOOK_KEY"]}/'  # <-- add your telegram token as environment variable
+
+        url = TELEGRAM_WEBHOOK_URL + 'sendMessage'
+        response = requests.post(url, json=json_data)
+        if response.ok:
+            return response
+        else:
+            return None
+
+
 

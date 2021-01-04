@@ -3,21 +3,34 @@ import pytest
 import requests
 import requests_mock
 
-from run import create_chatbot
+try:
+    from.temp_env_var import TEMP_ENV_VARS, ENV_VARS_TO_SUSPEND
+except ImportError:
+    TEMP_ENV_VARS = {}
+    ENV_VARS_TO_SUSPEND  = []
 
-def pytest_generate_tests(metafunc):
-    os.environ['TELEGRAM_WEBHOOK_URL'] = '1111'
+@pytest.fixture(scope="session", autouse=True)
+def tests_setup_and_teardown():
+    """
+    Article https://medium.com/@shay.palachy/temp-environment-variables-for-pytest-7253230bd777
+    """
+    # Will be executed before the first test
+    old_environ = dict(os.environ)
+    os.environ.update(TEMP_ENV_VARS)
+    for env_var in ENV_VARS_TO_SUSPEND:
+        os.environ.pop(env_var, default=None)
+
+    yield
+    # Will be executed after the last test
+    os.environ.clear()
+    os.environ.update(old_environ)
 
 @pytest.fixture
 def app():
+    from run import create_chatbot
+
     app = create_chatbot()
     return app
-
-@pytest.fixture
-def os_telegram_webhook():
-    code = '1111'
-    os.environ['TELEGRAM_WEBHOOK_URL'] = code
-    return code
 
 @pytest.fixture
 def message():
@@ -30,4 +43,3 @@ def telegram_url_sendMessage():
 @pytest.fixture
 def telegram_sendMessage(requests_mock,telegram_url_sendMessage, message):
     requests_mock.post(telegram_url_sendMessage, json=message, status_code=200)
-
