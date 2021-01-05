@@ -1,6 +1,6 @@
 import requests
 from flask import json
-from project.services import TelegramWebHookService
+from project.services import TelegramMessageService
 
 
 def test_salute(client):
@@ -11,17 +11,16 @@ def test_salute(client):
 def test_when_start_chat_bot_list_awarded_numbers(client,
                                                   mock_request_lottery_winners,
                                                   christmas_lottery_winners,
-                                                  message,
+                                                  request_message,
                                                   mocker):
-    hook_send_message = mocker.patch.object(TelegramWebHookService, 'send_message')
+    mocker.patch.object(TelegramMessageService, 'send')
 
     response = client.post(
         '/',
-        data=json.dumps(message),
+        data=json.dumps(request_message),
         content_type='application/json',
     )
     awarded_numbers = json.loads(response.get_data(as_text=True))
 
-    hook_send_message.assert_called_with(awarded_numbers)
     assert response.status_code == 200
     assert awarded_numbers == json.loads(christmas_lottery_winners)

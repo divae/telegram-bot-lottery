@@ -4,8 +4,8 @@ import requests
 import requests_mock
 from pytest_mock import mocker
 
-
 from .helper import MockResponse
+from ..services import TelegramMessageService
 
 try:
     from .temp_env_var import TEMP_ENV_VARS, ENV_VARS_TO_SUSPEND
@@ -40,25 +40,37 @@ def app():
 
 
 @pytest.fixture
-def message():
+def request_message():
     return {'message': {'chat': {'id': 1}, 'text': 'hi'}}
 
 
 @pytest.fixture
-def telegram_url_sendMessage():
-    return 'https://api.telegram.org/bot/sendMessage'
+def response_message():
+    return {'chat_id': 1, 'text': 'hi'}
+
+@pytest.fixture
+def telegram_message_service(request_message):
+    response = MockResponse(request_message, 200)
+
+    return TelegramMessageService(response)
 
 
 @pytest.fixture
-def telegram_sendMessage(requests_mock, telegram_url_sendMessage, message):
-    requests_mock.post(telegram_url_sendMessage, json=message, status_code=200)
+def telegram_url_send_message():
+    return 'https://api.telegram.org/bot/sendMessage'
 
+@pytest.fixture
+def mock_request_message_send(response_message, mocker):
+    response = MockResponse(response_message, 200)
+    mocker.patch.object(requests, 'post', response)
 
 @pytest.fixture
 def christmas_lottery_winners():
     return '{"timestamp":1608655774,"status":4,"numero1":72897,"numero2":6095,"numero3":52472,"numero4":75981,"numero5":38341,"numero6":86986,"numero7":37023,"numero8":19371,"numero9":49760,"numero10":55483,"numero11":28674,"numero12":43831,"numero13":31617,"fraseSorteoPDF":"Buscador y PDF con la lista oficial","fraseListaPDF":"Buscador y PDF con la lista oficial","listaPDF":"http://servicios.elpais.com/sorteos/loteria-navidad/lista-oficial-loteria-navidad/","urlAudio":"","error":0}'
 
+
 @pytest.fixture
 def mock_request_lottery_winners(christmas_lottery_winners, mocker):
     response = MockResponse(christmas_lottery_winners, 200)
     mocker.patch.object(requests, 'post', response)
+
