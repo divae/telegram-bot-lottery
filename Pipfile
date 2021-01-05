@@ -4,13 +4,13 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-flask = "*"
 pytest-flask = "*"
 requests = "*"
-pytest = "*"
+pytest = ">=6.2.1"
 requests-mock = "*"
 pytest-mock = "*"
 python-dotenv = "*"
+Flask = ">=1.1.2"
 
 [dev-packages]
 

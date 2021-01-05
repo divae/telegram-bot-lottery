@@ -4,3 +4,4 @@ requests
 pytest-flask
 requests-mock
 pytest-mock
+python-dotenv
