@@ -27,36 +27,36 @@ class TelegramMessageService:
         3º Premio: %s
         
         Premio a las 4 cifras:
-            - %s
-            - %s
+            %s
+            %s
             
         Premio a las 3 cifras:
-            - %s
-            - %s
-            - %s
-            - %s
-            - %s
-            - %s
-            - %s
-            - %s
-            - %s
-            - %s
-            - %s
-            - %s
-            - %s
-            - %s
+            %s
+            %s
+            %s
+            %s
+            %s
+            %s
+            %s
+            %s
+            %s
+            %s
+            %s
+            %s
+            %s
+            %s
             
         Premio a las 2 cifras:
-            - %s
-            - %s
-            - %s
-            - %s
-            - %s
+            %s
+            %s
+            %s
+            %s
+            %s
             
         Reintegros:
-            - %s
-            - %s
-            - %s
+            %s
+            %s
+            %s
             
         ¡SUERTE!
         """ % (self.text['fraseTexto'],
@@ -86,7 +86,8 @@ class TelegramMessageService:
                self.text['extracciones2cifras'][4],
                self.text['reintegros'][0],
                self.text['reintegros'][1],
-               self.text['reintegros'][2],               )
+               self.text['reintegros'][2]
+               )
 
     def change_message(self, text):
         self.text = text
