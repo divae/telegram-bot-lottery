@@ -1,9 +1,7 @@
 import pytest
-import requests
 from flask import json
 
-from project.services import LotteryService
-from project.tests.helper import MockResponse
+from bot.services import LotteryService
 
 
 def test_telegram_change_message(telegram_message_service, response_message):

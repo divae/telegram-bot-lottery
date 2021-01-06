@@ -1,6 +1,5 @@
-import requests
 from flask import json
-from project.services import TelegramMessageService
+from bot.services import TelegramMessageService
 
 
 def test_salute(client):

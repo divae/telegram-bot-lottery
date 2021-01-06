@@ -1,14 +1,12 @@
 import os
 import pytest
 import requests
-import requests_mock
-from pytest_mock import mocker
 
-from .helper import MockResponse
-from ..services import TelegramMessageService
+from bot.tests.helper import MockResponse
+from bot.services import TelegramMessageService
 
 try:
-    from .temp_env_var import TEMP_ENV_VARS, ENV_VARS_TO_SUSPEND
+    from bot.tests.config.temp_env_var import TEMP_ENV_VARS, ENV_VARS_TO_SUSPEND
 except ImportError:
     TEMP_ENV_VARS = {}
     ENV_VARS_TO_SUSPEND = []
