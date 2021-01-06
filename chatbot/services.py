@@ -1,6 +1,7 @@
-import os
 import requests
 from flask import json
+
+from chatbot.constants import TELEGRAM_WEBHOOK_URL, URL_CHRISTMAS_LOTTERY_SUMMARY
 
 
 class TelegramMessageService:
@@ -24,25 +25,18 @@ class TelegramMessageService:
         return self.message
 
     def send(self):
-        TELEGRAM_WEBHOOK_URL = f'https://api.telegram.org/bot{os.environ["TELEGRAM_WEBHOOK_KEY"]}/'  # <-- add your telegram token as environment variable
-
         url = TELEGRAM_WEBHOOK_URL + 'sendMessage'
         response = requests.post(url, json=self.message)
-        if response.ok:
-            return response
-        else:
-            return None
+
+        return response
 
 
 class LotteryService:
     @staticmethod
     def summary():
-        url = 'https://api.elpais.com/ws/LoteriaNavidadPremiados?n=resumen'
         headers = {"Content-type": "application/json"}
-        response = requests.get(url, headers=headers)
+        response = requests.get(URL_CHRISTMAS_LOTTERY_SUMMARY, headers=headers)
 
         awarded_numbers = json.loads(response.text[8:])
-        if response.ok:
-            return awarded_numbers
-        else:
-            return None
+
+        return awarded_numbers

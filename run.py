@@ -1,6 +1,6 @@
 import os
 
-from bot.api import create_chatbot
+from chatbot.api import create_chatbot
 
 app = create_chatbot()
 

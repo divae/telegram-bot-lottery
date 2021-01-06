@@ -2,11 +2,11 @@ import os
 import pytest
 import requests
 
-from bot.tests.helper import MockResponse
-from bot.services import TelegramMessageService
+from chatbot.tests.helper import MockResponse
+from chatbot.services import TelegramMessageService
 
 try:
-    from bot.tests.config.temp_env_var import TEMP_ENV_VARS, ENV_VARS_TO_SUSPEND
+    from chatbot.tests.config.temp_env_var import TEMP_ENV_VARS, ENV_VARS_TO_SUSPEND
 except ImportError:
     TEMP_ENV_VARS = {}
     ENV_VARS_TO_SUSPEND = []
@@ -43,19 +43,20 @@ def request_message():
 
 
 @pytest.fixture
-def response_message():
-    return {'chat_id': 1, 'text': 'hi'}
-
-@pytest.fixture
 def telegram_message_service(request_message):
-    response = MockResponse(request_message, 200)
-
-    return TelegramMessageService(response)
+    request = MockResponse(request_message, 200)
+    return TelegramMessageService(request)
 
 
 @pytest.fixture
 def telegram_url_send_message():
     return 'https://api.telegram.org/bot/sendMessage'
+
+
+@pytest.fixture
+def response_message():
+    return {'chat_id': 1, 'text': 'hi'}
+
 
 @pytest.fixture
 def mock_request_message_send(response_message, mocker):

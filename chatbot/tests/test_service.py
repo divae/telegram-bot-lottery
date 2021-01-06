@@ -1,7 +1,11 @@
+from unittest import mock
+
 import pytest
+import requests
 from flask import json
 
-from bot.services import LotteryService
+from chatbot.services import LotteryService
+from chatbot.tests.helper import MockResponse
 
 
 def test_telegram_change_message(telegram_message_service, response_message):
@@ -34,8 +38,11 @@ def test_telegram_message(telegram_message_service):
     assert message['text'] == text
 
 
-@pytest.mark.skip(reason="TypeError: 'MockResponse' object is not callable")
-def test_telegram_message_send(telegram_message_service, mock_request_message_send, response_message):
+@mock.patch('requests.post')
+def test_telegram_message_send(mock_post, telegram_message_service, response_message):
+    response = MockResponse(response_message, 200)
+    mock_post.return_value = response
+
     response = telegram_message_service.send()
     text = json.loads(response.get_data(as_text=True))
 
@@ -43,8 +50,11 @@ def test_telegram_message_send(telegram_message_service, mock_request_message_se
     assert text == response_message
 
 
-def test_summary_is_the_winning_numbers_when_the_draw_is_over(christmas_lottery_winners,
-                                                              mock_request_lottery_winners):
+@mock.patch('requests.post')
+def test_summary_is_the_winning_numbers_when_the_draw_is_over(mock_post, christmas_lottery_winners):
+    response = MockResponse(christmas_lottery_winners, 200)
+    mock_post.return_value = response
+
     awarded_numbers = LotteryService.summary()
 
     assert awarded_numbers == json.loads(christmas_lottery_winners)

@@ -1,5 +1,9 @@
+from unittest import mock
+
+import pytest
 from flask import json
-from bot.services import TelegramMessageService
+from chatbot.services import TelegramMessageService
+from chatbot.tests.helper import MockResponse
 
 
 def test_salute(client):
@@ -7,12 +11,14 @@ def test_salute(client):
     assert response.data == b'Hello, World!'
 
 
-def test_when_start_chat_bot_list_awarded_numbers(client,
-                                                  mock_request_lottery_winners,
+@mock.patch('requests.post')
+def test_when_start_chat_bot_list_awarded_numbers(mock_post,
+                                                  client,
                                                   christmas_lottery_winners,
                                                   request_message,
-                                                  mocker):
-    mocker.patch.object(TelegramMessageService, 'send')
+                                                  response_message):
+    response = MockResponse(response_message, 200)
+    mock_post.return_value = response
 
     response = client.post(
         '/',

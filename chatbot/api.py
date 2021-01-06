@@ -1,6 +1,6 @@
 from flask import Flask, request
 
-from bot.services import LotteryService, TelegramMessageService
+from chatbot.services import LotteryService, TelegramMessageService
 
 
 def create_chatbot():
